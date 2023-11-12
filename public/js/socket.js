@@ -1,4 +1,4 @@
-import { WEBSOCKET_URL } from './env.js'
+const WEBSOCKET_URL = "ws://localhost:8080";
 
 if (!WEBSOCKET_URL) {
   throw new Error('Forgot to initialze some variables')
