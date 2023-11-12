@@ -6,4 +6,4 @@ steps:
   args: ["run", "start"]
 
 options:
-  logging: NONE
+  logging: CLOUD_LOGGING_ONLY

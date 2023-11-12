@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "forever app.js -e js,html,css",
-    "stop": "forever stop app.js"
+    "start": "forever -s app.js -e js,html,css",
+    "stop": "forever stopall",
+    "poststart": "npm run exit"
   },
   "type": "module",
   "keywords": [],
