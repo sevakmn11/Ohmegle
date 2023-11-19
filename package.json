@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prestart": "npx kill-port 8080",
     "start": "forever -s app.js -e js,html,css",
-    "stop": "forever stopall",
-    "poststart": "npm run exit"
-  },
+    "stop": "npx kill-port 8080"
+    },
   "type": "module",
   "keywords": [],
   "author": "",
