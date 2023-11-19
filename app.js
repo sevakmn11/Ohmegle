@@ -2,7 +2,7 @@ import express from 'express'
 import { WebSocket, WebSocketServer } from 'ws'
 import db from './db/sqlite.js'
 
-const SERVER_PORT = 8080;
+const SERVER_PORT = 80;
 
 if (!SERVER_PORT) {
   throw new Error('Forgot to initialze some variables')
@@ -45,7 +45,7 @@ WebSocket.prototype.propagate = function (channel, data) {
 const app = express()
 const port = SERVER_PORT
 
-app.use(express.static('./public', { extensions: ['html'] }))
+app.use(express.static('./public', { extensions: ['html, text'] }))
 
 const server = app.listen(port, () => {
   console.log(`Listening on port ${port}`)
@@ -56,6 +56,15 @@ const wss = new WebSocketServer({ server })
 app.get('/online', (_, res) => {
   res.send({ online: wss.clients.size })
 })
+
+// app.get('.well-known/pki-validation', (_, res) => {
+//   res.sendFile('2EAA70260899644832A340CD4E7D53DC.txt', { root: './public' })  
+// }) 
+
+// app.get('.well-known/pki-validation', (_, res) => {
+//   res.sendFile('2EAA70260899644832A340CD4E7D53DC.txt', { root: './public' })  
+// }) 
+
 
 app.post('/feedback', express.json(), async (req, res) => {
   await db.insertFeedback({ feedback: req.body.feedback })
