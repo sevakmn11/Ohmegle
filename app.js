@@ -57,19 +57,6 @@ app.get('/online', (_, res) => {
   res.send({ online: wss.clients.size })
 })
 
-// app.get('.well-known/pki-validation', (_, res) => {
-//   res.sendFile('2EAA70260899644832A340CD4E7D53DC.txt', { root: './public' })  
-// }) 
-
-// app.get('.well-known/pki-validation', (_, res) => {
-//   res.sendFile('2EAA70260899644832A340CD4E7D53DC.txt', { root: './public' })  
-// }) 
-
-
-app.post('/feedback', express.json(), async (req, res) => {
-  await db.insertFeedback({ feedback: req.body.feedback })
-  res.sendStatus(200)
-})
 
 const sleep = (x) => new Promise((r) => setTimeout(() => r(), x))
 
