@@ -59,13 +59,18 @@ const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html, text'] }))
 
+app.enable('trust proxy')
+app.use((req, res, next) => {
+    req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
+})
+
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
 httpServer.listen(8080);
 httpsServer.listen(8443);
 
-const wss = new WebSocketServer({ server: httpServer })
+const wss = new WebSocketServer({ server: httpsServer })
 
 app.get('/online', (_, res) => {
   res.send({ online: wss.clients.size })
