@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prestart": "npx kill-port 8080",
-    "start": "forever -s app.js -e js,html,css",
+    "start": "nodemon app.js -e js,html,css",
     "stop": "npx kill-port 8080"
     },
   "type": "module",

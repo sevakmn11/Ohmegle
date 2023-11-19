@@ -47,7 +47,7 @@ const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html'] }))
 
-const server = app.listen(port, '0.0.0.0', () => {
+const server = app.listen(port, () => {
   console.log(`Listening on port ${port}`)
 })
 
