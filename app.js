@@ -1,8 +1,20 @@
 import express from 'express'
 import { WebSocket, WebSocketServer } from 'ws'
 import db from './db/sqlite.js'
+import * as fs from 'fs';
 
-const SERVER_PORT = 80;
+import * as https from 'https';
+
+import * as http from 'http';
+
+
+var privateKey  = fs.readFileSync('public/private.key', 'utf8');
+var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
+
+var credentials = {key: privateKey, cert: certificate};
+
+
+const SERVER_PORT = 8080;
 
 if (!SERVER_PORT) {
   throw new Error('Forgot to initialze some variables')
@@ -47,11 +59,13 @@ const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html, text'] }))
 
-const server = app.listen(port, () => {
-  console.log(`Listening on port ${port}`)
-})
+var httpServer = http.createServer(app);
+var httpsServer = https.createServer(credentials, app);
 
-const wss = new WebSocketServer({ server })
+httpServer.listen(8080);
+httpsServer.listen(8443);
+
+const wss = new WebSocketServer({ server: httpServer })
 
 app.get('/online', (_, res) => {
   res.send({ online: wss.clients.size })
