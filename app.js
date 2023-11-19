@@ -1,6 +1,6 @@
 import express from 'express'
 import { WebSocket, WebSocketServer } from 'ws'
-import db from './db/sqlite.js'
+// import db from './db/sqlite.js'
 import * as fs from 'fs';
 
 import * as https from 'https';
