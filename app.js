@@ -59,7 +59,7 @@ const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html'] }))
 
-httpApp.get("*", function(req, res, next) {
+app.get("*", function(req, res, next) {
   res.redirect("https://" + req.headers.host + req.path);
 })
 
