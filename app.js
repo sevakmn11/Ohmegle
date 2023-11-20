@@ -6,7 +6,7 @@ import * as fs from 'fs';
 import * as https from 'https';
 
 import * as http from 'http';
-
+import cors from 'cors';
 
 var privateKey  = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
@@ -58,7 +58,9 @@ const app = express()
 const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html'] }))
-
+app.use(cors({
+  origin: 'omegle.com'
+}))
 app.enable('trust proxy');
 app.use((req,res,next)=>{
     if(rec.secure){
