@@ -59,10 +59,14 @@ const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html'] }))
 
-app.get("*", function(req, res, next) {
-  res.redirect("https://" + req.headers.host + req.path);
-})
-
+app.enable('trust proxy');
+app.use((req,res,next)=>{
+    if(rec.secure){
+        next();
+    }else{
+        res.redirect('https://ohmegle.com'+req.url);
+    }
+});
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
