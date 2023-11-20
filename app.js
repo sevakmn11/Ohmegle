@@ -65,13 +65,14 @@ app.use(cors({
 app.all('*', ensureSecure);
 
 function ensureSecure(req, res, next){
-  if(req.secure){
+  console.log("prot:", req.protocol)
+  if(req.protocol == 'https'){
     // OK, continue
     return next();
   };
   // handle port numbers if you need non defaults
   // res.redirect('https://' + req.host + req.url); // express 3.x
-  res.redirect('https://' + req.hostname + req.url); // express 4.x
+  res.redirect(301, 'https://ohmegle.com' + req.url); // express 4.x
 }
 
 var httpServer = http.createServer(app);
