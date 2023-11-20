@@ -6,7 +6,6 @@ import * as fs from 'fs';
 import * as https from 'https';
 
 import * as http from 'http';
-import cors from 'cors';
 
 var privateKey  = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
@@ -58,22 +57,6 @@ const app = express()
 const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html'] }))
-app.use(cors({
-  origin: 'http://ohmegle.com'
-}))
-
-app.all('*', ensureSecure);
-
-function ensureSecure(req, res, next){
-  console.log("prot:", req.protocol)
-  if(req.protocol == 'https'){
-    // OK, continue
-    return next();
-  };
-  // handle port numbers if you need non defaults
-  // res.redirect('https://' + req.host + req.url); // express 3.x
-  res.redirect(301, 'https://ohmegle.com' + req.url); // express 4.x
-}
 
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
