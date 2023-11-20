@@ -59,7 +59,7 @@ const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html'] }))
 app.use(cors({
-  origin: 'omegle.com'
+  origin: 'http://ohmegle.com'
 }))
 
 app.all('*', ensureSecure);
