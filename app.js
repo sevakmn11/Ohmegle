@@ -57,12 +57,8 @@ WebSocket.prototype.propagate = function (channel, data) {
 const app = express()
 const port = SERVER_PORT
 
-app.use(express.static('./public', { extensions: ['html, text'] }))
+app.use(express.static('./public', { extensions: ['html'] }))
 
-app.enable('trust proxy')
-app.use((req, res, next) => {
-    req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
-})
 
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
