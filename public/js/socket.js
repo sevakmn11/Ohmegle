@@ -1,4 +1,4 @@
-import { WEBSOCKET_URL } from './env.js'
+const WEBSOCKET_URL = "wss://ohmegle.com";
 
 if (!WEBSOCKET_URL) {
   throw new Error('Forgot to initialze some variables')

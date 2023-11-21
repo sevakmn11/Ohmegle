@@ -1,0 +1,9 @@
+steps:
+- name: "gcr.io/cloud-builders/npm:latest"
+  args: ["install"]
+
+- name: "gcr.io/cloud-builders/npm:latest"
+  args: ["run", "start"]
+
+options:
+  logging: CLOUD_LOGGING_ONLY
