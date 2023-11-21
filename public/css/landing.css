@@ -16,7 +16,7 @@
   flex-direction: column;
   min-width: 60vw;
   max-width: 60vw;
-  margin: auto;
+  margin: 1em auto;
   border: 1px solid lightgray;
   border-top: none;
   background: white;
