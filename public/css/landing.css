@@ -2,6 +2,7 @@
 #main {
   display: flex;
   flex-direction: column;
+  background: #fdf8ea;
 }
 
 #top-bar {
@@ -13,26 +14,26 @@
 #content {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
   min-width: 60vw;
   max-width: 60vw;
   margin: auto;
   border: 1px solid lightgray;
   border-top: none;
-  background: lightyellow;
+  background: white;
+  border: 1px solid lightgray;
+  border-radius: 1%;
   box-sizing: border-box;
-  box-shadow: 0 0.1em 0.3em #ccc;
-  -moz-box-shadow: 0 0.1em 0.3em #ccc;
-  -webkit-box-shadow: 0 0.1em 0.3em #ccc;
+  box-shadow: 0em 0em 0.1em 0.1em lightgray inset !important;
+  -moz-box-shadow: 0em 0em 0.1em 0.1em lightgray inset !important;
+  -webkit-box-shadow: 0em 0em 0.1em 0.1em lightgray inset !important;
 }
 
 #social-message {
   display: flex;
-  padding: 40px;
+  padding: 1em;
   align-items: flex-start;
 }
 #message-content {
-  width: 50%;
   padding-right: 20px;
   font-size: 1.2rem;
 }
@@ -44,8 +45,7 @@
 }
 
 #instructions {
-  height: 12vh;
-  font-size: 2.5vh;
+  font-size: 1.5em;
   font-weight: bold;
   display: flex;
   flex-direction: column;
@@ -58,17 +58,16 @@
 }
 
 #instructions p {
-  background: lightblue;
-  padding: 20px 30px;
-  border-radius: 20px;
+  background: #a9ddff;
+  padding: 10px 30px;
+  border-radius: 10px;
 }
 
 #options-container {
+  margin-top: 1em;
   display: flex;
-  height: 25%;
-  flex-grow: 1;
   justify-content: space-evenly;
-  align-items: flex-start;
+  align-items: center;
 }
 
 #interest-container {
@@ -126,14 +125,16 @@
 
 #button-container button {
   font-size: 1.2rem;
-  padding: 20px 40px;
+  border-radius: 5px;
+  padding: 13px 20px;
 }
 
 #footer {
+  margin-top: 2em;
   display: flex;
   width: 100%;
   justify-content: center;
-  margin-bottom: 2px;
+  margin-bottom: 0.5em;
   font-size: 0.8rem;
 }
 
@@ -151,4 +152,9 @@ p {
   padding: 10px 20px;
   color: gray;
   font-size: 13px;
+}
+
+#mobilesitenote {
+  font-size: 0.8em;
+  text-align: center;
 }
