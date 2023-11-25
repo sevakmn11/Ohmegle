@@ -39,17 +39,17 @@ Array.prototype.shuffle = function () {
   return this
 }
 
-WebSocket.prototype.init = function () {
-  this.channels = new Map()
-  this.on('message', (message) => {
-    try {
-      const { channel, data } = JSON.parse(message.toString())
-      this.propagate(channel, data)
-    } catch (e) {
-      console.error(e)
-    }
-  })
-}
+// WebSocket.prototype.init = function () {
+//   this.channels = new Map()
+//   this.on('message', (message) => {
+//     try {
+//       const { channel, data } = JSON.parse(message.toString())
+//       this.propagate(channel, data)
+//     } catch (e) {
+//       console.error(e)
+//     }
+//   })
+// }
 
 WebSocket.prototype.register = function (channel, callback) {
   this.channels.set(channel, callback)
@@ -245,6 +245,7 @@ wss.on('connection', (ws, req) => {
     console.log(
       `${req.socket.remoteAddress}:${req.socket.remotePort} disconnected`
     )
+
     if (ws.peer) {
       ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }))
       ws.peer.peer = undefined
