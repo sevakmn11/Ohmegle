@@ -17,7 +17,6 @@ const url = 'mongodb://localhost:27017/chatLogs';
 
 // Define a schema
 const ChatSchema = new mongoose.Schema({
-  channel: String,
   message: String,
   ip: String
 });
@@ -177,7 +176,7 @@ wss.on('connection', (ws, req) => {
         await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
         // Create and save a new Chat
-        const chat = new Chat({ channel, message: data, ip });
+        const chat = new Chat({ message: data, ip });
         await chat.save();
 
         console.log("Chat logged successfully");
