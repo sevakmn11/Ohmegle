@@ -32,27 +32,27 @@ const $input = $('#message-input')
 function configureChat() {
   $input.focus()
 
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') {
-      $skipBtn.click()
-      e.preventDefault()
-    }
-  })
-  $input.addEventListener('keydown', function (e) {
-    if (e.key === 'Enter') {
-      clearInterval(timeout)
-      ws.emit('typing', false)
-      $sendBtn.click()
-      return e.preventDefault()
-    }
-    ws.emit('typing', true)
-  })
-  $input.addEventListener('keyup', function (e) {
-    clearInterval(timeout)
-    timeout = setTimeout(() => {
-      ws.emit('typing', false)
-    }, debounceTime)
-  })
+  // document.addEventListener('keydown', function (e) {
+  //   if (e.key === 'Escape') {
+  //     $skipBtn.click()
+  //     e.preventDefault()
+  //   }
+  // })
+  // $input.addEventListener('keydown', function (e) {
+  //   if (e.key === 'Enter') {
+  //     clearInterval(timeout)
+  //     ws.emit('typing', false)
+  //     $sendBtn.click()
+  //     return e.preventDefault()
+  //   }
+  //   ws.emit('typing', true)
+  // })
+  // $input.addEventListener('keyup', function (e) {
+  //   clearInterval(timeout)
+  //   timeout = setTimeout(() => {
+  //     ws.emit('typing', false)
+  //   }, debounceTime)
+  // })
 }
 
 const initializeConnection = () => {
