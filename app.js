@@ -190,13 +190,17 @@ wss.on('connection', (ws, req) => {
       // redirect message to peer
           // Save the message to the database
     console.log("text will be: ", data)
-    const chat = new Chat({ message: data.text, ip: ip });
-    await chat.save();
+    
+    try {
+          if(data.text !== "true" && data.text !== "false") {
+      const chat = new Chat({ message: data.text, ip: ip });
+      await chat.save();
 
-    console.log("Chat logged successfully");
-      return this.peer.send(JSON.stringify({ channel, data }))
+      console.log("Chat logged successfully");
     }
-
+    } catch (error) {
+      console.error(error);
+    }
 
   }
 
