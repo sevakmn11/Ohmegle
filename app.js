@@ -61,7 +61,6 @@ WebSocket.prototype.propagate = function (channel, data) {
     callback(data)
   } else if (this.peer) {
     // redirect message to peer
-    console.log("this: ", this)
     return this.peer.send(JSON.stringify({ channel, data }))
   }
 }
@@ -246,9 +245,6 @@ wss.on('connection', (ws, req) => {
     console.log(
       `${req.socket.remoteAddress}:${req.socket.remotePort} disconnected`
     )
-    console.log("close info req: ", req)
-    console.log("close info ws: ", ws)
-    console.log("close inof wss: ", wss)
     if (ws.peer) {
       ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }))
       ws.peer.peer = undefined
