@@ -192,8 +192,8 @@ wss.on('connection', (ws, req) => {
       console.log("text will be: ", data)
 
       try {
-        if (data.text !== "true" && data.text !== "false") {
-          const chat = new Chat({ message: data.text, ip: ip });
+        if (data !== "true" && data !== "false") {
+          const chat = new Chat({ message: data, ip: ip });
           await chat.save();
 
           console.log("Chat logged successfully");
