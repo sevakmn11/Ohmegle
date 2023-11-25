@@ -201,18 +201,18 @@ wss.on('connection', (ws, req) => {
       // }]
       try {
         if (data.toString() != "true" && data.toString() != "false") {
-          const chatId = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
 
           ws.propagate = async function (channel, data, ip, peerIp) {
             const callback = this.channels.get(channel)
             if (callback) {
               callback(data)
             } else if (this.peer) {
-              console.log("text will be: ", data)
           
               try {
                 if (data.toString() != "true" && data.toString() != "false") {
-                  const chatId = '123';  // replace with your actual chatId logic
+                  console.log("text will be: ", data)
+
+                  const chatId = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
                   const content = { message: data, ip: ip };
           
                   let chat = await Chat.findOne({ chatId: chatId });
