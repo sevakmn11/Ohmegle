@@ -38,15 +38,15 @@ function configureChat() {
       e.preventDefault()
     }
   })
-  // $input.addEventListener('keydown', function (e) {
-  //   if (e.key === 'Enter') {
-  //     clearInterval(timeout)
-  //     ws.emit('typing', false)
-  //     $sendBtn.click()
-  //     return e.preventDefault()
-  //   }
-  //   ws.emit('typing', true)
-  // })
+  $input.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      clearInterval(timeout)
+      ws.emit('typing', false)
+      $sendBtn.click()
+      return e.preventDefault()
+    }
+    ws.emit('typing', true)
+  })
   $input.addEventListener('keyup', function (e) {
     clearInterval(timeout)
     timeout = setTimeout(() => {

@@ -189,7 +189,7 @@ wss.on('connection', (ws, req) => {
     } else if (this.peer) {
       // redirect message to peer
           // Save the message to the database
-    console.log("text will be: ", data.text)
+    console.log("text will be: ", data)
     const chat = new Chat({ message: data.text, ip: ip });
     await chat.save();
 
