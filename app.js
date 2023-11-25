@@ -13,7 +13,7 @@ var privateKey  = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
 
 var credentials = {key: privateKey, cert: certificate};
-const url = 'mongodb://localhost:27017';
+const url = 'mongodb://ohmegle.com:27017';
 
 // Create a new MongoClient
 const client = new MongoClient(url);
@@ -186,7 +186,7 @@ wss.on('connection', (ws, req) => {
       }
     })
   }
-  
+
   ws.init()
 
   ws.register('peopleOnline', () => {
