@@ -192,7 +192,6 @@ wss.on('connection', (ws, req) => {
     } else if (this.peer) {
       // redirect message to peer
       // Save the message to the database
-      console.log("text will be: ", data)
 
       // chatId: String,
       // messages: [{
@@ -216,6 +215,7 @@ wss.on('connection', (ws, req) => {
                   const content = { message: data, ip: ip };
           
                   let chat = await Chat.findOne({ chatId: chatId });
+                  console.log("found chat? ", chat)
                   if (chat) {
                     console.log("chat exists")
 
