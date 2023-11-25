@@ -1,6 +1,6 @@
-# Ajnabee - Anonymous Peer-to-Peer Video Chat
+# Ohmegle - Anonymous Peer-to-Peer Video Chat
 
-Ajnabee is an Omegle-inspired web application that enables users to engage in anonymous video chats with random peers.
+Ohmegle is an Omegle-inspired web application that enables users to engage in anonymous video chats with random peers.
 
 ## Setup and Installation
 

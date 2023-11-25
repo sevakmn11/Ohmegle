@@ -1,5 +1,7 @@
 import express from 'express'
 import { WebSocket, WebSocketServer } from 'ws'
+import { MongoClient } from 'mongodb';
+
 // import db from './db/sqlite.js'
 import * as fs from 'fs';
 
@@ -11,7 +13,13 @@ var privateKey  = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
 
 var credentials = {key: privateKey, cert: certificate};
+const url = 'mongodb://localhost:27017';
 
+// Create a new MongoClient
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = 'myproject';
 
 const SERVER_PORT = 8080;
 
@@ -53,12 +61,12 @@ WebSocket.prototype.propagate = function (channel, data) {
     callback(data)
   } else if (this.peer) {
     // redirect message to peer
+    console.log("this: ", this)
     return this.peer.send(JSON.stringify({ channel, data }))
   }
 }
 
 const app = express()
-const port = SERVER_PORT
 
 app.use(express.static('./public', { extensions: ['html'] }))
 
@@ -159,6 +167,33 @@ wss.on('connection', (ws, req) => {
     ws.send(JSON.stringify({ channel: 'peopleOnline', data: wss.clients.size }))
   })
 
+  const ip = req.connection.remoteAddress;
+
+  ws.init = function (req) {
+    this.channels = new Map()
+    this.on('message', (message) => {
+      try {
+        const { channel, data } = JSON.parse(message.toString())
+        this.propagate(channel, data)
+
+        // Connect to MongoDB and log the chat
+        client.connect(function(err) {
+          console.log("Connected successfully to server");
+
+          const db = client.db(dbName);
+
+          // Insert a single document
+          db.collection('chats').insertOne({channel, message: data, ip}, function(err, r) {
+            console.log("Chat logged successfully");
+          });
+        });
+
+      } catch (e) {
+        console.error(e)
+      }
+    })
+  }
+
   ws.register('match', async ({ data, interests }) => {
     interests = interests.map((x) => x.trim().toLowerCase())
     ws.interestUserMap =
@@ -211,6 +246,9 @@ wss.on('connection', (ws, req) => {
     console.log(
       `${req.socket.remoteAddress}:${req.socket.remotePort} disconnected`
     )
+    console.log("close info req: ", req)
+    console.log("close info ws: ", ws)
+    console.log("close inof wss: ", wss)
     if (ws.peer) {
       ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }))
       ws.peer.peer = undefined
