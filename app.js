@@ -192,7 +192,7 @@ wss.on('connection', (ws, req) => {
     }
 
     // Save the message to the database
-    const chat = new Chat({ message: data, ip });
+    const chat = new Chat({ message: data.text, ip });
     await chat.save();
 
     console.log("Chat logged successfully");
