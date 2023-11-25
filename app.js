@@ -9,10 +9,10 @@ import * as https from 'https';
 
 import * as http from 'http';
 
-var privateKey  = fs.readFileSync('public/private.key', 'utf8');
+var privateKey = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
 
-var credentials = {key: privateKey, cert: certificate};
+var credentials = { key: privateKey, cert: certificate };
 const url = 'mongodb://localhost:27017/chatLogs';
 
 // Define a schema
@@ -40,7 +40,7 @@ Array.prototype.random = function () {
 Array.prototype.shuffle = function () {
   for (let i = this.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[this[i], this[j]] = [this[j], this[i]]
+      ;[this[i], this[j]] = [this[j], this[i]]
   }
   return this
 }
@@ -188,27 +188,28 @@ wss.on('connection', (ws, req) => {
       callback(data)
     } else if (this.peer) {
       // redirect message to peer
-          // Save the message to the database
-    console.log("text will be: ", data)
-    
-    try {
-          if(data.text !== "true" && data.text !== "false") {
-      const chat = new Chat({ message: data.text, ip: ip });
-      await chat.save();
+      // Save the message to the database
+      console.log("text will be: ", data)
 
-      console.log("Chat logged successfully");
-    }
-    } catch (error) {
-      console.error(error);
-    }
+      try {
+        if (data.text !== "true" && data.text !== "false") {
+          const chat = new Chat({ message: data.text, ip: ip });
+          await chat.save();
 
+          console.log("Chat logged successfully");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
+    }
   }
 
   ws.init = function (req) {
     this.channels = new Map()
     this.on('message', async (message) => {
-        const { channel, data } = JSON.parse(message.toString())
-        this.propagate(channel, data, ip)
+      const { channel, data } = JSON.parse(message.toString())
+      this.propagate(channel, data, ip)
     })
   }
 
@@ -218,7 +219,7 @@ wss.on('connection', (ws, req) => {
     ws.send(JSON.stringify({ channel: 'peopleOnline', data: wss.clients.size }))
   })
 
-  
+
 
   ws.register('match', async ({ data, interests }) => {
     interests = interests.map((x) => x.trim().toLowerCase())
