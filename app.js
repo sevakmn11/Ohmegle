@@ -160,7 +160,7 @@ wss.videoInterestUserMap = new Map()
 wss.on('connection', (ws, req) => {
   console.log('new connection')
 
-  ws.init()
+
 
   ws.register('peopleOnline', () => {
     ws.send(JSON.stringify({ channel: 'peopleOnline', data: wss.clients.size }))
@@ -192,6 +192,8 @@ wss.on('connection', (ws, req) => {
       }
     })
   }
+
+  ws.init()
 
   ws.register('match', async ({ data, interests }) => {
     interests = interests.map((x) => x.trim().toLowerCase())
