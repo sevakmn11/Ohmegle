@@ -160,12 +160,6 @@ wss.videoInterestUserMap = new Map()
 wss.on('connection', (ws, req) => {
   console.log('new connection')
 
-
-
-  ws.register('peopleOnline', () => {
-    ws.send(JSON.stringify({ channel: 'peopleOnline', data: wss.clients.size }))
-  })
-
   const ip = req.connection.remoteAddress;
 
   ws.init = function (req) {
@@ -192,8 +186,14 @@ wss.on('connection', (ws, req) => {
       }
     })
   }
-
+  
   ws.init()
+
+  ws.register('peopleOnline', () => {
+    ws.send(JSON.stringify({ channel: 'peopleOnline', data: wss.clients.size }))
+  })
+
+  
 
   ws.register('match', async ({ data, interests }) => {
     interests = interests.map((x) => x.trim().toLowerCase())
