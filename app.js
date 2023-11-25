@@ -1,6 +1,6 @@
 import express from 'express'
 import { WebSocket, WebSocketServer } from 'ws'
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 
 // import db from './db/sqlite.js'
 import * as fs from 'fs';
@@ -13,13 +13,17 @@ var privateKey  = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
 
 var credentials = {key: privateKey, cert: certificate};
-const url = 'mongodb://ohmegle.com:27017';
+const url = 'mongodb://localhost:27017/chatLogs';
 
-// Create a new MongoClient
-const client = new MongoClient(url);
+// Define a schema
+const ChatSchema = new mongoose.Schema({
+  channel: String,
+  message: String,
+  ip: String
+});
 
-// Database Name
-const dbName = 'myproject';
+// Define a model
+const Chat = mongoose.model('Chat', ChatSchema);
 
 const SERVER_PORT = 8080;
 
@@ -164,22 +168,22 @@ wss.on('connection', (ws, req) => {
 
   ws.init = function (req) {
     this.channels = new Map()
-    this.on('message', (message) => {
+    this.on('message', async (message) => {
       try {
         const { channel, data } = JSON.parse(message.toString())
         this.propagate(channel, data)
 
         // Connect to MongoDB and log the chat
-        client.connect(function(err) {
-          console.log("Connected successfully to server");
+        await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
 
-          const db = client.db(dbName);
+        // Create and save a new Chat
+        const chat = new Chat({ channel, message: data, ip });
+        await chat.save();
 
-          // Insert a single document
-          db.collection('chats').insertOne({channel, message: data, ip}, function(err, r) {
-            console.log("Chat logged successfully");
-          });
-        });
+        console.log("Chat logged successfully");
+
+        // Close the MongoDB connection
+        await mongoose.connection.close();
 
       } catch (e) {
         console.error(e)
