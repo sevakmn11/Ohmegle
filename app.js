@@ -17,8 +17,11 @@ const url = 'mongodb://localhost:27017/chatLogs';
 
 // Define a schema
 const ChatSchema = new mongoose.Schema({
-  message: String,
-  ip: String
+  chatId: String,
+  messages: [{
+    message: String,
+    ip: String
+  }]
 });
 
 // Define a model
@@ -191,17 +194,51 @@ wss.on('connection', (ws, req) => {
       // Save the message to the database
       console.log("text will be: ", data)
 
+      // chatId: String,
+      // messages: [{
+      //   message: String,
+      //   ip: String
+      // }]
       try {
         if (data.toString() != "true" && data.toString() != "false") {
-          const chat = new Chat({ message: data, ip: ip });
-          await chat.save();
+          const chatId = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
+
+          ws.propagate = async function (channel, data, ip, peerIp) {
+            const callback = this.channels.get(channel)
+            if (callback) {
+              callback(data)
+            } else if (this.peer) {
+              console.log("text will be: ", data)
+          
+              try {
+                if (data.toString() != "true" && data.toString() != "false") {
+                  const chatId = '123';  // replace with your actual chatId logic
+                  const content = { message: data, ip: ip };
+          
+                  let chat = await Chat.findOne({ chatId: chatId });
+                  if (chat) {
+                    // If chat document exists, update it
+                    chat.content.push(content);
+                  } else {
+                    // If chat document doesn't exist, create it
+                    chat = new Chat({ chatId: chatId, content: [content] });
+                  }
+                  await chat.save();
+          
+                  console.log("Chat logged successfully");
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            }
+          }
 
           console.log("Chat logged successfully");
         }
       } catch (error) {
         console.error(error);
       }
-
+      return this.peer.send(JSON.stringify({ channel, data }))
     }
   }
 
