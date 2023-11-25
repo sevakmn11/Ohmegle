@@ -24,6 +24,9 @@ const ChatSchema = new mongoose.Schema({
 // Define a model
 const Chat = mongoose.model('Chat', ChatSchema);
 
+// Connect to MongoDB
+mongoose.connect(url);
+
 const SERVER_PORT = 8080;
 
 if (!SERVER_PORT) {
@@ -58,15 +61,29 @@ WebSocket.prototype.register = function (channel, callback) {
   this.channels.set(channel, callback)
 }
 
-WebSocket.prototype.propagate = function (channel, data) {
-  const callback = this.channels.get(channel)
-  if (callback) {
-    callback(data)
-  } else if (this.peer) {
-    // redirect message to peer
-    return this.peer.send(JSON.stringify({ channel, data }))
-  }
-}
+// WebSocket.prototype.propagate = function (channel, data, ip) {
+//   const callback = this.channels.get(channel)
+//   if (callback) {
+//     callback(data)
+//   } else if (this.peer) {
+//     // redirect message to peer
+//     try {
+
+//     // Create and save a new Chat
+//     const chat = new Chat({ message: data, ip });
+//     await chat.save();
+
+//     console.log("Chat logged successfully");
+
+//     // Close the MongoDB connection
+//     await mongoose.connection.close();
+
+//   } catch (e) {
+//     console.error(e)
+//   }
+//     return this.peer.send(JSON.stringify({ channel, data }))
+//   }
+// }
 
 const app = express()
 
@@ -165,28 +182,27 @@ wss.on('connection', (ws, req) => {
 
   const ip = req.connection.remoteAddress;
 
+  ws.propagate = async function (channel, data, ip) {
+    const callback = this.channels.get(channel)
+    if (callback) {
+      callback(data)
+    } else if (this.peer) {
+      // redirect message to peer
+      console.log("this: ", this)
+    }
+
+    // Save the message to the database
+    const chat = new Chat({ channel, message: data, ip });
+    await chat.save();
+
+    console.log("Chat logged successfully");
+  }
+
   ws.init = function (req) {
     this.channels = new Map()
     this.on('message', async (message) => {
-      try {
         const { channel, data } = JSON.parse(message.toString())
-        this.propagate(channel, data)
-
-        // Connect to MongoDB and log the chat
-        await mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true });
-
-        // Create and save a new Chat
-        const chat = new Chat({ message: data, ip });
-        await chat.save();
-
-        console.log("Chat logged successfully");
-
-        // Close the MongoDB connection
-        await mongoose.connection.close();
-
-      } catch (e) {
-        console.error(e)
-      }
+        this.propagate(channel, data, ip)
     })
   }
 
