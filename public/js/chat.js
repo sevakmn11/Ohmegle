@@ -60,6 +60,7 @@ const initializeConnection = () => {
   $msgs.innerHTML = `
     <div class="message-status">Looking for people online...</div>
   `
+  $downloadChatBtn.style.display = 'none';
   $sendBtn.disabled = true
   $input.value = ''
   $input.readOnly = true
