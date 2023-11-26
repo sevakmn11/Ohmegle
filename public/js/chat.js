@@ -155,9 +155,7 @@ ws.register('typing', async (isTyping) => {
 
 ws.register('disconnect', async (dt) => {
   console.log('received disconnect request')
-  $msgs.innerHTML = `
-    <div class="message-status">Stranger disconnected...</div>
-  `
+  $('.message-status')[0].text('Stranger disconnected..');
   $downloadChatBtn.style.display = 'block';
   $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
   $downloadChatBtn.addEventListener('click', async () => {
