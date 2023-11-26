@@ -196,7 +196,8 @@ wss.on('connection', (ws, req) => {
         if (data.toString() != "true" && data.toString() != "false") {
           console.log("text will be: ", data)
 
-          const chatId = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
+          const chatIdSelf = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
+          const chatIdPeer = this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort + this._socket.remoteAddress + ":" + this._socket.remotePort;
           const content = { message: data, ip: ip };
 
           // const ChatSchema = new mongoose.Schema({
@@ -209,8 +210,10 @@ wss.on('connection', (ws, req) => {
           console.log("chatId: ", chatId)
           console.log("content: ", content)
 
-          let chat = await Chat.findOne({ chatId: chatId });
-
+          let chatSelf = await Chat.findOne({ chatId: chatId });
+          let chatPeer = await Chat.findOne({ chatId: chatIdPeer });
+          let chat = chatSelf || chatPeer;
+          
           if (chat) {
             console.log("chat exists")
             // If chat document exists, update it
