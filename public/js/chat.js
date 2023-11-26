@@ -152,7 +152,18 @@ ws.register('typing', async (isTyping) => {
   $msgArea.scrollTop = $msgArea.scrollHeight
 })
 
-ws.register('addDownloadButton', async (data) => {
+// ws.register('addDownloadButton', async (data) => {
+//   $downloadChatBtn.style.display = 'block';
+//   $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
+//   $downloadChatBtn.addEventListener('click', async () => {
+//     const url = `/downloadChatHistory?self=${data.self}&other=${data.other}`;
+//     console.log("setting btn link to: ", url);
+//     window.open(url, '_blank');
+//   });
+// })
+
+ws.register('disconnect', async (data) => {
+  console.log('received disconnect request')
   $downloadChatBtn.style.display = 'block';
   $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
   $downloadChatBtn.addEventListener('click', async () => {
@@ -160,10 +171,6 @@ ws.register('addDownloadButton', async (data) => {
     console.log("setting btn link to: ", url);
     window.open(url, '_blank');
   });
-})
-
-ws.register('disconnect', async () => {
-  console.log('received disconnect request')
   //initializeConnection()
 })
 
