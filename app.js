@@ -20,6 +20,7 @@ const ChatSchema = new mongoose.Schema({
   chatId: String,
   messages: [{
     message: String,
+    timestamp: Date,
     ip: String
   }]
 });
@@ -198,15 +199,8 @@ wss.on('connection', (ws, req) => {
 
           const chatIdSelf = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
           const chatIdPeer = this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort + this._socket.remoteAddress + ":" + this._socket.remotePort;
-          const content = { message: data, ip: ip };
+          const content = { message: data, imestamp: new Date(), ip: ip };
 
-          // const ChatSchema = new mongoose.Schema({
-          //   chatId: String,
-          //   messages: [{
-          //     message: String,
-          //     ip: String
-          //   }]
-          // });
           console.log("content: ", content)
 
           let chatSelf = await Chat.findOne({ chatId: chatIdSelf });
