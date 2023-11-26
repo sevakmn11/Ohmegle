@@ -240,9 +240,13 @@ wss.on('connection', (ws, req) => {
         if (data.toString() != "true" && data.toString() != "false") {
           // console.log("text will be: ", data)
 
-          const chatIdSelf = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
-          const chatIdPeer = this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort + this._socket.remoteAddress + ":" + this._socket.remotePort;
-          const content = { message: data, timestamp: new Date(), ip: ip };
+          const selfIpInfo = this._socket.remoteAddress + ":" + this._socket.remotePort;
+          const peerIpInfo = this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
+
+          const chatIdSelf = selfIpInfo + peerIpInfo;
+          const chatIdPeer = peerIpInfo + selfIpInfo;
+
+          const content = { message: data, timestamp: new Date(), ip: selfIpInfo };
 
           // console.log("content: ", content)
 
