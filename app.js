@@ -211,8 +211,18 @@ wss.on('connection', (ws, req) => {
 
           let chatSelf = await Chat.findOne({ chatId: chatIdSelf });
           let chatPeer = await Chat.findOne({ chatId: chatIdPeer });
-          let chat = chatSelf || chatPeer;
 
+          let chat, chatId;
+
+          if(chatSelf){
+            chat = chatSelf;
+            chatId = chatIdSelf;
+          } else {
+            chat = chatPeer;
+            chatId = chatIdPeer;
+          }
+
+          console.log("chatId: ", chatId)
           if (chat) {
             console.log("chat exists")
             // If chat document exists, update it
@@ -221,7 +231,7 @@ wss.on('connection', (ws, req) => {
             console.log("chat doesn't exist")
 
             // If chat document doesn't exist, create it
-            chat = new Chat({ chatId: chatSelf, messages: [content] });
+            chat = new Chat({ chatId: chatId, messages: [content] });
           }
           console.log("chat json ", JSON.stringify(chat))
           await chat.save();
