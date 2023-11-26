@@ -2,7 +2,11 @@ import express from 'express'
 import { WebSocket, WebSocketServer } from 'ws'
 import mongoose from 'mongoose';
 
-import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // import db from './db/sqlite.js'
 import * as fs from 'fs';
