@@ -2,6 +2,8 @@ import express from 'express'
 import { WebSocket, WebSocketServer } from 'ws'
 import mongoose from 'mongoose';
 
+import path from 'path';
+
 // import db from './db/sqlite.js'
 import * as fs from 'fs';
 
