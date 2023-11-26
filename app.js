@@ -199,7 +199,7 @@ wss.on('connection', (ws, req) => {
 
           const chatIdSelf = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
           const chatIdPeer = this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort + this._socket.remoteAddress + ":" + this._socket.remotePort;
-          const content = { message: data, imestamp: new Date(), ip: ip };
+          const content = { message: data, timestamp: new Date(), ip: ip };
 
           console.log("content: ", content)
 
