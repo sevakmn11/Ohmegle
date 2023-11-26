@@ -164,7 +164,7 @@ ws.register('addDownloadButton', async (data) => {
 
 ws.register('disconnect', async () => {
   console.log('received disconnect request')
-  initializeConnection()
+  //initializeConnection()
 })
 
 configureChat()
