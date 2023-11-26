@@ -115,6 +115,8 @@ app.get('/online', (_, res) => {
 app.post('/downloadChatHistory', (req, res) => {
   const self = req.body.self;
   const other = req.body.other;
+  console.log("self: ", self);
+  console.log("other: ", other);
 
   const chatIdSelf = self + other
   const chatIdPeer = other + self;
@@ -123,6 +125,9 @@ app.post('/downloadChatHistory', (req, res) => {
   Chat.findOne({ chatId: { $in: [chatIdSelf, chatIdPeer] } })
     .then(chat => {
       if (chat) {
+        chat.messages.forEach(element => {
+          console.log(element);
+        });
         const chatHistory = chat.messages.map(message => `${message.ip === self ? 'You' : 'Other person'}: ${message.message}`).join('\n');
         const filePath = path.join(__dirname, 'chatHistory.txt');
         fs.writeFileSync(filePath, chatHistory);
