@@ -157,8 +157,8 @@ ws.register('disconnect', async (dt) => {
   console.log('received disconnect request')
   $input.readOnly = true
   const disconnectMsg = document.createElement('div')
-  msgE.className = 'message-status';
-  msgE.textContent = `Stranger disconnected...`;
+  disconnectMsg.className = 'message-status';
+  disconnectMsg.textContent = `Stranger disconnected...`;
   $msgs.appendChild(disconnectMsg);
   $downloadChatBtn.style.display = 'block';
   $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
