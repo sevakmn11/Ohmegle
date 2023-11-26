@@ -213,7 +213,9 @@ wss.on('connection', (ws, req) => {
 
                   const chatId = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
                   const content = { message: data, ip: ip };
-          
+                  
+                  console.log("chatId: ", chatId)
+                  console.log("content: ", content)
                   let chat = await Chat.findOne({ chatId: chatId });
                   console.log("found chat? ", chat)
                   if (chat) {
