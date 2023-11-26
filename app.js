@@ -346,7 +346,7 @@ wss.on('connection', (ws, req) => {
     )
 
     if (ws.peer) {
-      var content =  {self: ws.peer.peer.socket.remoteAddress + ":" + ws.peer.peer.socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort};
+      var content =  {self: ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort};
       console.log("content in close: ", content) 
       ws.peer.send(JSON.stringify({ channel: 'disconnect', data: content }));
       ws.peer.peer = undefined
