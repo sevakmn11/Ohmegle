@@ -153,13 +153,13 @@ ws.register('typing', async (isTyping) => {
 })
 
 
-ws.register('disconnect', async (data) => {
+ws.register('disconnect', async (dt) => {
   console.log('received disconnect request')
   $downloadChatBtn.style.display = 'block';
   $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
   $downloadChatBtn.addEventListener('click', async () => {
     const url = `/downloadChatHistory`;
-    const data = { self: data.self, other: data.other };
+    const data = { self: dt.self, other: dt.other };
     console.log("sending post request to: ", url);
   
     const response = await fetch(url, {
