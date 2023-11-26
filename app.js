@@ -333,9 +333,9 @@ wss.on('connection', (ws, req) => {
     // Send a message to the client-side code to add the download button
     // ws.send(JSON.stringify({ channel: 'addDownloadButton', 
     //
-    var content =  {self: ws.socket.remoteAddress + ":" + self.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort};
-    console.log("content in disc: ", content) 
-    ws.peer.send(JSON.stringify({ channel: 'disconnect', data: content }));
+    // var content =  {self: ws.socket.remoteAddress + ":" + self.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort};
+    // console.log("content in disc: ", content) 
+    ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }));
     ws.peer.peer = undefined
     ws.peer = undefined;
   })
@@ -346,7 +346,7 @@ wss.on('connection', (ws, req) => {
     )
 
     if (ws.peer) {
-      var content =  {self: ws.socket.remoteAddress + ":" + ws.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort};
+      var content =  {self: ws.socket.remoteAddress + ":" + ws.socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort};
       console.log("content in close: ", content) 
       ws.peer.send(JSON.stringify({ channel: 'disconnect', data: content }));
       ws.peer.peer = undefined
