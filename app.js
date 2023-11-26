@@ -113,22 +113,17 @@ app.get('/online', (_, res) => {
 })
 
 app.post('/downloadChatHistory', (req, res) => {
-  const self = req.body.self;
-  const other = req.body.other;
-  console.log("self: ", self);
-  console.log("other: ", other);
-
-  const chatIdSelf = self + other
-  const chatIdPeer = other + self;
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  console.log("ip: ", ip);
 
   // Replace this with your actual query
-  Chat.findOne({ chatId: { $in: [chatIdSelf, chatIdPeer] } })
+  Chat.findOne({ ip: ip }).sort({ timestamp: -1 }).limit(1)
     .then(chat => {
       if (chat) {
         chat.messages.forEach(element => {
           console.log(element);
         });
-        const chatHistory = chat.messages.map(message => `${message.ip === self ? 'You' : 'Other person'}: ${message.message}`).join('\n');
+        const chatHistory = chat.messages.map(message => `${message.ip === ip ? 'You' : 'Other person'}: ${message.message}`).join('\n');
         const filePath = path.join(__dirname, 'chatHistory.txt');
         fs.writeFileSync(filePath, chatHistory);
         res.download(filePath, err => {
@@ -227,8 +222,6 @@ wss.videoInterestUserMap = new Map()
 wss.on('connection', (ws, req) => {
   console.log('new connection')
 
-  const ip = req.connection.remoteAddress;
-
   ws.propagate = async function (channel, data, ip) {
     const callback = this.channels.get(channel)
     if (callback) {
@@ -246,7 +239,7 @@ wss.on('connection', (ws, req) => {
           const chatIdSelf = selfIpInfo + peerIpInfo;
           const chatIdPeer = peerIpInfo + selfIpInfo;
 
-          const content = { message: data, timestamp: new Date(), ip: selfIpInfo };
+          const content = { message: data, timestamp: new Date(), ip: ip };
 
           // console.log("content: ", content)
 
@@ -364,7 +357,7 @@ wss.on('connection', (ws, req) => {
     if (ws.peer) {
       var content =  {self: ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort};
       console.log("content in close: ", content) 
-      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: content }));
+      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }));
       ws.peer.peer = undefined
     }
     if (!ws.interestUserMap || !ws.userInterestMap) return

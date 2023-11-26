@@ -154,7 +154,7 @@ ws.register('typing', async (isTyping) => {
 })
 
 
-ws.register('disconnect', async (dt) => {
+ws.register('disconnect', async () => {
   console.log('received disconnect request')
   $input.readOnly = true
   const disconnectMsg = document.createElement('div')
@@ -165,15 +165,13 @@ ws.register('disconnect', async (dt) => {
   $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
   $downloadChatBtn.addEventListener('click', async () => {
     const url = `/downloadChatHistory`;
-    const data = { self: dt.self, other: dt.other };
     console.log("sending post request to: ", url);
   
     const response = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
+      }
     });
   
     if (response.ok) {
@@ -189,7 +187,7 @@ ws.register('disconnect', async (dt) => {
     } else {
       console.error('Error downloading chat history:', response.statusText);
     }
-  });
+  }, { once: true });
   //initializeConnection()
 })
 
