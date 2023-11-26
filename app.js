@@ -192,56 +192,41 @@ wss.on('connection', (ws, req) => {
     } else if (this.peer) {
       // redirect message to peer
       // Save the message to the database
-
-      // chatId: String,
-      // messages: [{
-      //   message: String,
-      //   ip: String
-      // }]
       try {
         if (data.toString() != "true" && data.toString() != "false") {
+          console.log("text will be: ", data)
 
-          ws.propagate = async function (channel, data, ip, peerIp) {
-            const callback = this.channels.get(channel)
-            if (callback) {
-              callback(data)
-            } else if (this.peer) {
-          
-              try {
-                if (data.toString() != "true" && data.toString() != "false") {
-                  console.log("text will be: ", data)
+          const chatId = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
+          const content = { message: data, ip: ip };
 
-                  const chatId = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
-                  const content = { message: data, ip: ip };
-                  
-                  console.log("chatId: ", chatId)
-                  console.log("content: ", content)
-                  let chat = await Chat.findOne({ chatId: chatId });
-                  console.log("found chat? ", chat)
-                  if (chat) {
-                    console.log("chat exists")
+          // const ChatSchema = new mongoose.Schema({
+          //   chatId: String,
+          //   messages: [{
+          //     message: String,
+          //     ip: String
+          //   }]
+          // });
+          console.log("chatId: ", chatId)
+          console.log("content: ", content)
 
-                    // If chat document exists, update it
-                    chat.content.push(content);
-                  } else {
-                    console.log("chat doesn't exist")
+          let chat = await Chat.findOne({ chatId: chatId });
 
-                    // If chat document doesn't exist, create it
-                    chat = new Chat({ chatId: chatId, content: [content] });
-                  }
-                  console.log("chat json ", JSON.stringify(chat))
-                  await chat.save();
-          
-                  console.log("Chat logged successfully");
-                }
-              } catch (error) {
-                console.error(error);
-              }
-            }
+          if (chat) {
+            console.log("chat exists")
+            // If chat document exists, update it
+            chat.messages.push(content);
+          } else {
+            console.log("chat doesn't exist")
+
+            // If chat document doesn't exist, create it
+            chat = new Chat({ chatId: chatId, messages: [content] });
           }
+          console.log("chat json ", JSON.stringify(chat))
+          await chat.save();
 
           console.log("Chat logged successfully");
         }
+
       } catch (error) {
         console.error(error);
       }
