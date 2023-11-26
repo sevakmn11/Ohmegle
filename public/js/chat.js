@@ -28,6 +28,7 @@ const $msgs = $('#messages')
 const $msgArea = $('#message-area')
 const $typing = $('#typing')
 const $input = $('#message-input')
+const $downloadChatBtn = $('#downloadChatBtn')
 
 function configureChat() {
   $input.focus()
@@ -149,6 +150,16 @@ ws.register('message', async (msg) => {
 ws.register('typing', async (isTyping) => {
   $typing.style.display = isTyping ? 'block' : 'none'
   $msgArea.scrollTop = $msgArea.scrollHeight
+})
+
+ws.register('addDownloadButton', async (data) => {
+  $downloadChatBtn.style.display = 'block';
+  $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
+  $downloadChatBtn.addEventListener('click', async () => {
+    const url = `/downloadChatHistory?self=${data.self}&other=${data.other}`;
+    console.log("setting btn link to: ", url);
+    window.open(url, '_blank');
+  });
 })
 
 ws.register('disconnect', async () => {

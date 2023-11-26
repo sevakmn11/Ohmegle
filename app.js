@@ -105,6 +105,37 @@ app.get('/online', (_, res) => {
   res.send({ online: wss.clients.size })
 })
 
+app.get('/downloadChatHistory', (req, res) => {
+  const self = req.query.self;
+  const other = req.query.other;
+
+  const chatIdSelf = self + other
+  const chatIdPeer = other + self;
+
+  // Replace this with your actual query
+  Chat.findOne({ chatId: { $in: [chatIdSelf, chatIdPeer] } })
+    .then(chat => {
+      if (chat) {
+        const chatHistory = chat.messages.map(message => `${message.timestamp}: ${message.ip === 'you' ? 'You' : 'Other person'}: ${message.message}`).join('\n');
+        const filePath = path.join(__dirname, 'chatHistory.txt');
+        fs.writeFileSync(filePath, chatHistory);
+        res.download(filePath, err => {
+          if (err) {
+            console.error(err);
+            res.status(500).send('Error downloading the file.');
+          }
+          fs.unlinkSync(filePath);
+        });
+      } else {
+        res.status(404).send('Chat history not found.');
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      res.status(500).send('Error retrieving chat history.');
+    });
+});
+
 
 const sleep = (x) => new Promise((r) => setTimeout(() => r(), x))
 
@@ -299,9 +330,13 @@ wss.on('connection', (ws, req) => {
 
   ws.register('disconnect', async () => {
     if (!ws.peer) return
+    // Send a message to the client-side code to add the download button
+    ws.send(JSON.stringify({ channel: 'addDownloadButton', 
+                             data: {self: ws.socket.remoteAddress + ":" + self.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort} }))
+
     ws.peer.peer = undefined
     ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }))
-    ws.peer = undefined
+    ws.peer = undefined;
   })
 
   ws.on('close', () => {
