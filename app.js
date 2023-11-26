@@ -226,13 +226,13 @@ wss.on('connection', (ws, req) => {
       // Save the message to the database
       try {
         if (data.toString() != "true" && data.toString() != "false") {
-          console.log("text will be: ", data)
+          // console.log("text will be: ", data)
 
           const chatIdSelf = this._socket.remoteAddress + ":" + this._socket.remotePort + this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort;
           const chatIdPeer = this.peer._socket.remoteAddress + ":" + this.peer._socket.remotePort + this._socket.remoteAddress + ":" + this._socket.remotePort;
           const content = { message: data, timestamp: new Date(), ip: ip };
 
-          console.log("content: ", content)
+          // console.log("content: ", content)
 
           let chatSelf = await Chat.findOne({ chatId: chatIdSelf });
           let chatPeer = await Chat.findOne({ chatId: chatIdPeer });
@@ -247,18 +247,18 @@ wss.on('connection', (ws, req) => {
             chatId = chatIdPeer;
           }
 
-          console.log("chatId: ", chatId)
+          // console.log("chatId: ", chatId)
           if (chat) {
-            console.log("chat exists")
+            // console.log("chat exists")
             // If chat document exists, update it
             chat.messages.push(content);
           } else {
-            console.log("chat doesn't exist")
+            // console.log("chat doesn't exist")
 
             // If chat document doesn't exist, create it
             chat = new Chat({ chatId: chatId, messages: [content] });
           }
-          console.log("chat json ", JSON.stringify(chat))
+          // console.log("chat json ", JSON.stringify(chat))
           await chat.save();
 
           console.log("Chat logged successfully");
@@ -334,7 +334,7 @@ wss.on('connection', (ws, req) => {
     // ws.send(JSON.stringify({ channel: 'addDownloadButton', 
     //
     var content =  {self: ws.socket.remoteAddress + ":" + self.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort};
-    console.log("content: ", content) 
+    console.log("content in disc: ", content) 
     ws.peer.send(JSON.stringify({ channel: 'disconnect', data: content }));
     ws.peer.peer = undefined
     ws.peer = undefined;
@@ -346,7 +346,9 @@ wss.on('connection', (ws, req) => {
     )
 
     if (ws.peer) {
-      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }))
+      var content =  {self: ws.socket.remoteAddress + ":" + self.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort};
+      console.log("content in close: ", content) 
+      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: content }));
       ws.peer.peer = undefined
     }
     if (!ws.interestUserMap || !ws.userInterestMap) return
