@@ -333,9 +333,9 @@ wss.on('connection', (ws, req) => {
     // Send a message to the client-side code to add the download button
     // ws.send(JSON.stringify({ channel: 'addDownloadButton', 
     //                          data: {self: ws.socket.remoteAddress + ":" + self.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort} }))
-
+    
     ws.peer.peer = undefined
-    ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }))
+    ws.peer.send(JSON.stringify({ channel: 'disconnect', data: {self: ws.socket.remoteAddress + ":" + self.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort} }))
     ws.peer = undefined;
   })
 
@@ -345,8 +345,7 @@ wss.on('connection', (ws, req) => {
     )
 
     if (ws.peer) {
-      ws.peer.send(JSON.stringify({ channel: 'disconnect',
-      data: {self: ws.socket.remoteAddress + ":" + self.socket.remotePort, other: ws.peer.socket.remoteAddress + ":" + ws.peer.socket.remotePort} }))
+      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }))
       ws.peer.peer = undefined
     }
     if (!ws.interestUserMap || !ws.userInterestMap) return
