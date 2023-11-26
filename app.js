@@ -112,7 +112,7 @@ app.get('/online', (_, res) => {
   res.send({ online: wss.clients.size })
 })
 
-app.get('/downloadChatHistory', (req, res) => {
+app.post('/downloadChatHistory', (req, res) => {
   const self = req.query.self;
   const other = req.query.other;
 
