@@ -99,7 +99,7 @@ WebSocket.prototype.register = function (channel, callback) {
 const app = express()
 
 app.use(express.static('./public', { extensions: ['html'] }))
-
+app.use(express.json())
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
@@ -113,8 +113,8 @@ app.get('/online', (_, res) => {
 })
 
 app.post('/downloadChatHistory', (req, res) => {
-  const self = req.query.self;
-  const other = req.query.other;
+  const self = req.body.self;
+  const other = req.body.other;
 
   const chatIdSelf = self + other
   const chatIdPeer = other + self;
