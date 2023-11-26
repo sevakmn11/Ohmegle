@@ -155,7 +155,11 @@ ws.register('typing', async (isTyping) => {
 
 ws.register('disconnect', async (dt) => {
   console.log('received disconnect request')
-  $msgs.appendChild('<div class="message-status">Stranger disconnected...</div>')
+  $input.readOnly = true
+  const disconnectMsg = document.createElement('div')
+  msgE.className = 'message-status';
+  msgE.textContent = `Stranger disconnected...`;
+  $msgs.appendChild(disconnectMsg);
   $downloadChatBtn.style.display = 'block';
   $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
   $downloadChatBtn.addEventListener('click', async () => {
