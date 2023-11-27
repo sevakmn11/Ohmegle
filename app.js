@@ -17,7 +17,7 @@ import * as https from 'https';
 import * as http from 'http';
 import { OpenAI } from 'openai';
 
-const openai = new OpenAI({apiKey: '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'});
+const openai = new OpenAI({apiKey: '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'});
 
 var privateKey = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
