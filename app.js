@@ -222,6 +222,8 @@ wss.videoInterestUserMap = new Map()
 wss.on('connection', (ws, req) => {
   console.log('new connection')
 
+  const ip = req.connection.remoteAddress;
+
   ws.propagate = async function (channel, data, ip) {
     const callback = this.channels.get(channel)
     if (callback) {
@@ -284,7 +286,7 @@ wss.on('connection', (ws, req) => {
     this.channels = new Map()
     this.on('message', async (message) => {
       const { channel, data } = JSON.parse(message.toString())
-      this.propagate(channel, data, req.socket.remoteAddress)
+      this.propagate(channel, data, ip)
     })
   }
 
