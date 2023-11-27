@@ -25,6 +25,7 @@ const url = 'mongodb://localhost:27017/chatLogs';
 // Define a schema
 const ChatSchema = new mongoose.Schema({
   chatId: String,
+  timestamp: { type: Date, default: Date.now },
   messages: [{
     message: String,
     timestamp: Date,
