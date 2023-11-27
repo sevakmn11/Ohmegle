@@ -284,7 +284,7 @@ wss.on('connection', (ws, req) => {
     this.channels = new Map()
     this.on('message', async (message) => {
       const { channel, data } = JSON.parse(message.toString())
-      this.propagate(channel, data, ip)
+      this.propagate(channel, data, req.socket.remoteAddress)
     })
   }
 
