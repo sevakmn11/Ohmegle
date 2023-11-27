@@ -15,6 +15,9 @@ import * as fs from 'fs';
 import * as https from 'https';
 
 import * as http from 'http';
+import { OpenAI } from 'openai';
+
+const openai = new OpenAI('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');
 
 var privateKey = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
@@ -245,6 +248,18 @@ wss.on('connection', (ws, req) => {
 
           const content = { message: data, timestamp: new Date(), ip: ip };
 
+          // Send the message to the OpenAI API
+        const gptResponse = await openai.complete({
+          engine: 'text-davinci-002',
+          prompt: content.message,
+          max_tokens: 60
+        });
+
+        // Analyze the response
+        if (gptResponse.choices[0].text.includes('flagged_term')) {
+          console.log('Flagged message: ', content.message);
+          // Handle the flagged message...
+        }
           // console.log("content: ", content)
 
           let chatSelf = await Chat.findOne({ chatId: chatIdSelf });
