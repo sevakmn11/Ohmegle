@@ -21,7 +21,6 @@ import { config } from 'dotenv';
 import axios from 'axios';
 
 config();
-const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
 var privateKey = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
@@ -261,7 +260,7 @@ wss.on('connection', (ws, req) => {
             data: {
               show_original_response: false,
               fallback_providers: "",
-              providers: "microsoft, openai",
+              providers: "microsoft",
               language: "en",
               text: data,
             },
