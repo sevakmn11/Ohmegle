@@ -57,6 +57,7 @@ function configureChat() {
 }
 
 const initializeConnection = () => {
+  $downloadChatBtn.removeEventListener('click', downloadChat);
   $msgs.innerHTML = `
     <div class="message-status">Looking for people online...</div>
   `
@@ -163,33 +164,29 @@ ws.register('disconnect', async () => {
   $msgs.appendChild(disconnectMsg);
   $downloadChatBtn.style.display = 'block';
   $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
-  $downloadChatBtn.addEventListener('click', async () => {
-    const url = `/downloadChatHistory`;
-    console.log("sending post request to: ", url);
-  
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-  
-    if (response.ok) {
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.style.display = 'none';
-      a.href = url;
-      a.download = 'chatHistory.txt';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-    } else {
-      console.error('Error downloading chat history:', response.statusText);
-    }
-  }, { once: true });
+  $downloadChatBtn.addEventListener('click', downloadChat);
   //initializeConnection()
 })
+
+const downloadChat = async () => {
+  const url = `/downloadChatHistory`;
+  console.log("sending post request to: ", url);
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (response.ok) {
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    // rest of your code...
+  }
+};
 
 configureChat()
 initializeConnection()
