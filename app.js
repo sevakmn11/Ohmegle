@@ -16,8 +16,9 @@ import * as https from 'https';
 
 import * as http from 'http';
 import { OpenAI } from 'openai';
-
-const openai = new OpenAI({apiKey: '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'});
+import { config } from 'dotenv';
+config();
+const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
 var privateKey = fs.readFileSync('public/private.key', 'utf8');
 var certificate = fs.readFileSync('public/certificate.crt', 'utf8');
