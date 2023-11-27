@@ -17,6 +17,9 @@ import * as https from 'https';
 import * as http from 'http';
 import { OpenAI } from 'openai';
 import { config } from 'dotenv';
+
+import axios from 'axios';
+
 config();
 const openai = new OpenAI({apiKey: process.env.OPENAI_API_KEY});
 
@@ -249,17 +252,29 @@ wss.on('connection', (ws, req) => {
 
           const content = { message: data, timestamp: new Date(), ip: ip };
 
-          // Send the message to the OpenAI API
-          const moderation = await openai.moderations.create({ input: data});
-
-        // Analyze the response
-        if (moderation.results[0].flagged === true) {
-          console.log('Flagged message: ', content.message);
-          console.log("categeory: ", moderation.results[0].categories)
-          console.log("category_scores: ", moderation.results[0].category_scores)
-          // Handle the flagged message...
-        }
-          // console.log("content: ", content)
+          const options = {
+            method: "POST",
+            url: "https://api.edenai.run/v2/text/moderation",
+            headers: {
+              authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOTNkOTZkYmEtMmM5Ni00M2RlLTljYmMtYzc4MDQ3MTQxNGVmIiwidHlwZSI6ImFwaV90b2tlbiJ9.z_GMUtu_0owVAmeLf8T4ypTtedGwuM9bmMxX_Y98o2k",
+            },
+            data: {
+              show_original_response: false,
+              fallback_providers: "",
+              providers: "microsoft, openai",
+              language: "en",
+              text: data,
+            },
+          };
+          
+          axios
+  .request(options)
+  .then((response) => {
+    console.log(response.data);
+  })
+  .catch((error) => {
+    console.error(error);
+  });
 
           let chatSelf = await Chat.findOne({ chatId: chatIdSelf });
           let chatPeer = await Chat.findOne({ chatId: chatIdPeer });
