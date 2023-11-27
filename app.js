@@ -117,7 +117,7 @@ app.post('/downloadChatHistory', (req, res) => {
   console.log("ip: ", ip);
 
   // Replace this with your actual query
-  Chat.findOne({ ip: ip }).sort({ timestamp: -1 }).limit(1)
+  Chat.findOne({ 'messages.ip': ip }).sort({ timestamp: -1 }).limit(1)
     .then(chat => {
       if (chat) {
         chat.messages.forEach(element => {
@@ -134,6 +134,7 @@ app.post('/downloadChatHistory', (req, res) => {
           fs.unlinkSync(filePath);
         });
       } else {
+        console.log("Chat history not found.");
         res.status(404).send('Chat history not found.');
       }
     })
