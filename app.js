@@ -249,7 +249,7 @@ wss.on('connection', (ws, req) => {
           const content = { message: data, timestamp: new Date(), ip: ip };
 
           // Send the message to the OpenAI API
-        const gptResponse = await openai.createCompletion ({
+        const gptResponse = await openai.Completion.create ({
           engine: 'text-davinci-002',
           prompt: content.message,
           max_tokens: 60
