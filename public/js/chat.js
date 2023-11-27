@@ -170,22 +170,28 @@ ws.register('disconnect', async () => {
 
 const downloadChat = async () => {
   const url = `/downloadChatHistory`;
-  console.log("sending post request to: ", url);
-
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
+    console.log("sending post request to: ", url);
+  
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  
+    if (response.ok) {
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.style.display = 'none';
+      a.href = url;
+      a.download = 'chatHistory.txt';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } else {
+      console.error('Error downloading chat history:', response.statusText);
     }
-  });
-
-  if (response.ok) {
-    const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.style.display = 'none';
-    // rest of your code...
-  }
 };
 
 configureChat()
