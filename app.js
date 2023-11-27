@@ -249,15 +249,13 @@ wss.on('connection', (ws, req) => {
           const content = { message: data, timestamp: new Date(), ip: ip };
 
           // Send the message to the OpenAI API
-        const gptResponse = await openai.Completion.create ({
-          engine: 'text-davinci-002',
-          prompt: content.message,
-          max_tokens: 60
-        });
+          const moderation = await openai.moderations.create({ input: data});
 
         // Analyze the response
-        if (gptResponse.choices[0].text.includes('flagged_term')) {
+        if (moderation.results[0].flagged === true) {
           console.log('Flagged message: ', content.message);
+          console.log("categeory: ", moderation.results[0].categories)
+          console.log("category_scores: ", moderation.results[0].category_scores)
           // Handle the flagged message...
         }
           // console.log("content: ", content)
