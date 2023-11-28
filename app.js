@@ -265,22 +265,22 @@ wss.on('connection', (ws, req) => {
               text: data,
             },
           };
-          
+
           axios
-  .request(options)
-  .then((response) => {
-    console.log(response.data);
-  })
-  .catch((error) => {
-    console.error(error);
-  });
+            .request(options)
+            .then((response) => {
+              console.log(response.data);
+            })
+            .catch((error) => {
+              console.error(error);
+            });
 
           let chatSelf = await Chat.findOne({ chatId: chatIdSelf });
           let chatPeer = await Chat.findOne({ chatId: chatIdPeer });
 
           let chat, chatId;
 
-          if(chatSelf){
+          if (chatSelf) {
             chat = chatSelf;
             chatId = chatIdSelf;
           } else {
@@ -316,6 +316,9 @@ wss.on('connection', (ws, req) => {
     this.channels = new Map()
     this.on('message', async (message) => {
       const { channel, data } = JSON.parse(message.toString())
+      if( channel === 'message' ) {
+        ws.hasSentData = true;
+      }
       this.propagate(channel, data, ip)
     })
   }
@@ -387,8 +390,8 @@ wss.on('connection', (ws, req) => {
     )
 
     if (ws.peer) {
-      var content =  {self: ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort};
-      console.log("content in close: ", content) 
+      var content = { self: ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort };
+      console.log("content in close: ", content)
       ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }));
       ws.peer.peer = undefined
     }
