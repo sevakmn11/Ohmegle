@@ -62,12 +62,10 @@ p {
   -moz-box-shadow: 0 0.1em 0.3em #ccc;
   -webkit-box-shadow: 0 0.1em 0.3em #ccc;
 }
-#logo {
-  height: 100%;
-}
 #logo img {
-  height: 100%;
-  width: 122px;
+  width: 150px;
+  margin-top: 70%;
+  cursor: pointer;
 }
 #logo h1 {
   cursor: pointer;
