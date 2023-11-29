@@ -70,7 +70,7 @@ const initializeConnection = async () => {
   `
   $sendBtn.disabled = true
   $input.value = ''
-  $input.readOnly = true
+  $input.disabled = true
 
   const iceConfig = {
     iceServers: [
@@ -198,7 +198,7 @@ ws.register('connected', async (data) => {
   }
   $msgArea.scrollTop = $msgArea.scrollHeight
   $sendBtn.disabled = false
-  $input.readOnly = false
+  $input.disabled = false
 })
 
 ws.register('message', async (msg) => {

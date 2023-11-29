@@ -64,7 +64,7 @@ const initializeConnection = () => {
   $downloadChatBtn.style.display = 'none';
   $sendBtn.disabled = true
   $input.value = ''
-  $input.readOnly = true
+  $input.disabled = true
 
   ws.emit('peopleOnline')
   const params = new URLSearchParams(window.location.search)
@@ -135,7 +135,7 @@ ws.register('connected', async (data) => {
   }
   $msgArea.scrollTop = $msgArea.scrollHeight
   $sendBtn.disabled = false
-  $input.readOnly = false
+  $input.disabled = false
 })
 
 ws.register('message', async (msg) => {
@@ -157,7 +157,7 @@ ws.register('typing', async (isTyping) => {
 
 ws.register('disconnect', async () => {
   console.log('received disconnect request')
-  $input.readOnly = true
+  $input.disabled = true
   const disconnectMsg = document.createElement('div')
   disconnectMsg.className = 'message-status';
   disconnectMsg.textContent = `Stranger disconnected...`;
