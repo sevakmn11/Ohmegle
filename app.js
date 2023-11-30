@@ -393,7 +393,7 @@ wss.on('connection', (ws, req) => {
     if (ws.peer) {
       var chatId = { self: ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort };
       const selfIpInfo = ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort;
-      const peerIpInfo = req.sockett.remoteAddress + ":" + req.socket.remotePort;
+      const peerIpInfo = req.socket.remoteAddress + ":" + req.socket.remotePort;
 
       const chatIdSelf = selfIpInfo + peerIpInfo;
       const chatIdPeer = peerIpInfo + selfIpInfo;
