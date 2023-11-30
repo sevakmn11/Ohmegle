@@ -380,7 +380,7 @@ wss.on('connection', (ws, req) => {
         .then(chat => {
            if (chat) {
             _thisChatId = chat._id.toString();
-            console.log("chatId: ", id)
+            console.log("chatId: ", _thisChatId)
            } else {
             console.log("Chat history not found.");
            }
