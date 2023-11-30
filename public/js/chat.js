@@ -162,6 +162,7 @@ ws.register('disconnect', async (dt) => {
   disconnectMsg.className = 'message-status';
   disconnectMsg.textContent = `Stranger disconnected...`;
   $msgs.appendChild(disconnectMsg);
+  console.log('chatId: ', dt.chatId);
   if(dt.chatId) {
       $downloadChatBtn.style.display = 'block';
     $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
