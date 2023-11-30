@@ -121,7 +121,8 @@ app.get('/online', (_, res) => {
 
 app.post('/downloadChatHistory', (req, res) => {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  console.log("ip: ", ip);
+  console.log("requestor ip: ", ip);
+  console.log("peer ip: ", req.body.peerIp)
 
   // Replace this with your actual query
   Chat.findOne({ 'messages.ip': ip }).sort({ timestamp: -1 }).limit(1)
@@ -392,7 +393,19 @@ wss.on('connection', (ws, req) => {
     if (ws.peer) {
       var content = { self: ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort };
       console.log("content in close: ", content)
-      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: '' }));
+
+      //check if any messages were sent between the users
+      var chatId;
+      Chat.findOne({ 'messages.ip': ip }).sort({ timestamp: -1 }).limit(1)
+        .then(chat => {
+           if (chat) {
+            chatId = chat._id;
+            console.log("chatId: ", chatId)
+           } else {
+            console.log("Chat history not found.");
+           }
+        })
+      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: {id: chatId} }));
       ws.peer.peer = undefined
     }
     if (!ws.interestUserMap || !ws.userInterestMap) return

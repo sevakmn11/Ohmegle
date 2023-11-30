@@ -49,6 +49,7 @@ p {
 
 /* top bar styles */
 #top-bar {
+  margin-bottom: 10px;
   grid-area: top;
   display: flex;
   flex-direction: row;
