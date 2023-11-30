@@ -274,7 +274,7 @@ wss.on('connection', (ws, req) => {
             // console.log("chat doesn't exist")
 
             // If chat document doesn't exist, create it
-            chat = new Chat({ chatId: chatId, messages: [content] });
+            chat = new Chat({ chatId: chatId, timestamp: new Date(), messages: [content] });
           }
           // console.log("chat json ", JSON.stringify(chat))
           await chat.save();
