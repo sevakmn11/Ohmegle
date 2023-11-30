@@ -385,7 +385,7 @@ wss.on('connection', (ws, req) => {
             console.log("Chat history not found.");
            }
         });
-      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: {id: _thisChatId.toString()} }));
+      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: {id: _thisChatId?.toString()} }));
       ws.peer.peer = undefined
     }
     if (!ws.interestUserMap || !ws.userInterestMap) return
