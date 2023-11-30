@@ -398,8 +398,6 @@ wss.on('connection', (ws, req) => {
       const chatIdSelf = selfIpInfo + peerIpInfo;
       const chatIdPeer = peerIpInfo + selfIpInfo;
       
-      console.log("content in close: ", content)
-
       //check if any messages were sent between the users
       var id;;
       Chat.findOne({ 'chatId': { $in: [chatIdSelf, chatIdPeer] } }).sort({timestamp: -1})
