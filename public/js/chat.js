@@ -167,9 +167,9 @@ ws.register('disconnect', async (data) => {
       $downloadChatBtn.style.display = 'block';
     $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
     $downloadChatBtn.addEventListener('click', downloadChat);
+  } else {
+    initializeConnection()
   }
-
-  //initializeConnection()
 })
 
 const downloadChat = async () => {
