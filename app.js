@@ -252,30 +252,6 @@ wss.on('connection', (ws, req) => {
 
           const content = { message: data, timestamp: new Date(), ip: ip };
 
-          const options = {
-            method: "POST",
-            url: "https://api.edenai.run/v2/text/moderation",
-            headers: {
-              authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiOTNkOTZkYmEtMmM5Ni00M2RlLTljYmMtYzc4MDQ3MTQxNGVmIiwidHlwZSI6ImFwaV90b2tlbiJ9.z_GMUtu_0owVAmeLf8T4ypTtedGwuM9bmMxX_Y98o2k",
-            },
-            data: {
-              show_original_response: false,
-              fallback_providers: "",
-              providers: "microsoft",
-              language: "en",
-              text: data,
-            },
-          };
-
-          axios
-            .request(options)
-            .then((response) => {
-              console.log(response.data);
-            })
-            .catch((error) => {
-              console.error(error);
-            });
-
           let chatSelf = await Chat.findOne({ chatId: chatIdSelf });
           let chatPeer = await Chat.findOne({ chatId: chatIdPeer });
 
