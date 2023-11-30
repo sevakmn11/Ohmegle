@@ -155,14 +155,14 @@ ws.register('typing', async (isTyping) => {
 })
 
 
-ws.register('disconnect', async (id) => {
+ws.register('disconnect', async (data) => {
   console.log('received disconnect request')
   $input.disabled = true
   const disconnectMsg = document.createElement('div')
   disconnectMsg.className = 'message-status';
   disconnectMsg.textContent = `Stranger disconnected...`;
   $msgs.appendChild(disconnectMsg);
-  console.log('chatId: ', id);
+  console.log('chatId: ', data);
   if(id) {
       $downloadChatBtn.style.display = 'block';
     $downloadChatBtn.scrollTop = $msgArea.scrollHeight;
