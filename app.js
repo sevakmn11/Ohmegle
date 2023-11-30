@@ -379,8 +379,8 @@ wss.on('connection', (ws, req) => {
       Chat.findOne({ 'chatId': { $in: [chatIdSelf, chatIdPeer] } }).sort({timestamp: -1})
         .then(chat => {
            if (chat) {
-            id = chat._id;
-            console.log("chatId: ", chatId)
+            id = chat._id.toString();
+            console.log("chatId: ", id)
            } else {
             console.log("Chat history not found.");
            }
