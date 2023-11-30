@@ -381,12 +381,12 @@ wss.on('connection', (ws, req) => {
            if (chat) {
             _thisChatId = chat._id.toString();
             console.log("chatId: ", _thisChatId)
+            ws.peer.peer = undefined
            } else {
             console.log("Chat history not found.");
            }
+           ws.peer.send(JSON.stringify({ channel: 'disconnect', data: {id: _thisChatId} }));
         });
-      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: {id: _thisChatId?.toString()} }));
-      ws.peer.peer = undefined
     }
     if (!ws.interestUserMap || !ws.userInterestMap) return
     deleteUser(ws, ws.interestUserMap, ws.userInterestMap)
