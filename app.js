@@ -375,17 +375,17 @@ wss.on('connection', (ws, req) => {
       const chatIdPeer = peerIpInfo + selfIpInfo;
       
       //check if any messages were sent between the users
-      var id;;
+      var _thisChatId;;
       Chat.findOne({ 'chatId': { $in: [chatIdSelf, chatIdPeer] } }).sort({timestamp: -1})
         .then(chat => {
            if (chat) {
-            id = chat._id.toString();
+            _thisChatId = chat._id.toString();
             console.log("chatId: ", id)
            } else {
             console.log("Chat history not found.");
            }
-        })
-      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: {id: id} }));
+        });
+      ws.peer.send(JSON.stringify({ channel: 'disconnect', data: {id: _thisChatId} }));
       ws.peer.peer = undefined
     }
     if (!ws.interestUserMap || !ws.userInterestMap) return
