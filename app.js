@@ -367,13 +367,13 @@ wss.on('connection', (ws, req) => {
     )
 
     if (ws.peer) {
-      var chatId = { self: ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort, other: req.socket.remoteAddress + ":" + req.socket.remotePort };
       const selfIpInfo = ws.peer._socket.remoteAddress + ":" + ws.peer._socket.remotePort;
       const peerIpInfo = req.socket.remoteAddress + ":" + req.socket.remotePort;
 
       const chatIdSelf = selfIpInfo + peerIpInfo;
       const chatIdPeer = peerIpInfo + selfIpInfo;
       
+      console.log("check iether chatId: ", chatIdSelf, " or ", chatIdPeer);
       //check if any messages were sent between the users
       var _thisChatId;;
       Chat.findOne({ 'chatId': { $in: [chatIdSelf, chatIdPeer] } }).sort({timestamp: -1})
