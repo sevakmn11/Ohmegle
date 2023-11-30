@@ -125,7 +125,7 @@ app.post('/downloadChatHistory', (req, res) => {
   console.log("peer ip: ", req.body.peerIp)
 
   // Replace this with your actual query
-  Chat.findOne({ 'messages.ip': ip }).sort({ timestamp: -1 }).limit(1)
+  Chat.findOne({ 'chatId': {$regex: ip} }).sort({ timestamp: -1 }).limit(1)
     .then(chat => {
       if (chat) {
         chat.messages.forEach(element => {
