@@ -122,15 +122,11 @@ app.get('/online', (_, res) => {
 app.post('/downloadChatHistory', (req, res) => {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   console.log("requestor ip: ", ip);
-  console.log("peer ip: ", req.body.peerIp)
 
   // Replace this with your actual query
   Chat.findOne({ 'chatId': {$regex: ip} }).sort({ timestamp: -1 }).limit(1)
     .then(chat => {
       if (chat) {
-        chat.messages.forEach(element => {
-          console.log(element);
-        });
         const chatHistory = chat.messages.map(message => `${message.ip === ip ? 'You' : 'Other person'}: ${message.message}`).join('\n');
         const filePath = path.join(__dirname, 'chatHistory.txt');
         fs.writeFileSync(filePath, chatHistory);

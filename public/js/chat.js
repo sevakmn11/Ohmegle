@@ -14,7 +14,7 @@ let base = Math.floor(Math.random() * 50 + 30)
 const noise = Math.floor(Math.random() * 10 - 5)
 
 if (!sessionStorage.getItem('peopleOnline')) {
-  sessionStorage.setItem('peopleOnline', base)
+  sessionStorage.setItem('peopleOnline', 0)
 } else {
   base = +sessionStorage.getItem('peopleOnline')
 }
@@ -98,7 +98,7 @@ $sendBtn.addEventListener('click', () => {
 })
 
 ws.register('peopleOnline', async (data) => {
-  $peopleOnline.innerHTML = base + noise + +data
+  $peopleOnline.innerHTML = 1 + +data
 })
 
 ws.register('connected', async (data) => {
