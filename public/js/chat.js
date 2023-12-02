@@ -116,6 +116,9 @@ ws.register('connected', async (data) => {
     commonInterests = `${first.join(', ')} and ${commonInterests}`
   }
 
+  const audio = new Audio('assets/chime.mp3');
+  audio.play();
+
   $msgs.innerHTML = ''
   const status = document.createElement('div')
   status.className = 'message-status'
