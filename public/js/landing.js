@@ -97,7 +97,7 @@ async function getPeopleOnline() {
     const { online } = await res.json();
     console.log(online);
 
-    $peopleOnline.innerHTML = 1 + +online;
+    $peopleOnline.innerHTML = base + noise + +online;
 }
 
 configureTags();

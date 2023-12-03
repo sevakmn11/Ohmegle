@@ -161,7 +161,7 @@ ws.register('begin', async () => {
 })
 
 ws.register('peopleOnline', async (data) => {
-  $peopleOnline.innerHTML = 1+ +data
+  $peopleOnline.innerHTML = base + noise + +data
 })
 
 ws.register('connected', async (data) => {
@@ -181,7 +181,7 @@ ws.register('connected', async (data) => {
 
   const audio = new Audio('assets/chime.mp3');
   audio.play();
-  
+
   $msgs.innerHTML = ''
   const status = document.createElement('div')
   status.className = 'message-status'
