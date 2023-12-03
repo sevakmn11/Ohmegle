@@ -6,7 +6,7 @@ const esc = (x) => {
     p.appendChild(txt);
     return p.innerHTML;
 };
-let base = Math.floor(Math.random() * 50 + 30);
+let base = Math.floor(Math.random() * 10 + 10)
 const noise = Math.floor(Math.random() * 10 - 5);
 let allTags = [];
 

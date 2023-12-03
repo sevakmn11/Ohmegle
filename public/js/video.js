@@ -11,7 +11,7 @@ const esc = (x) => {
 const ws = await createSocket()
 const debounceTime = 1000
 
-let base = Math.floor(Math.random() * 50 + 30)
+let base = Math.floor(Math.random() * 10 + 10)
 const noise = Math.floor(Math.random() * 10 - 5)
 
 if (!sessionStorage.getItem('peopleOnline')) {
