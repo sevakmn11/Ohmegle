@@ -73,7 +73,6 @@
 
   /* video container */
   #videos {
-    height: 83vh;
     margin: 10px;
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr;
