@@ -46,4 +46,4 @@ function configureTopbar() {
 // }
 
 configureTopbar()
-configureFeedbackModal()
+// configureFeedbackModal()
