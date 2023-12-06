@@ -35,12 +35,12 @@ p {
   height: 100dvh !important; /* for modern browsers, like chrome*/
   box-sizing: border-box;
   display: grid;
-  grid-template-rows: 8% auto 9%;
-  grid-template-columns: 30% auto;
+  grid-template-rows:  8% auto 20% 8%;
   grid-template-areas:
     'top top'
-    'vid msg'
-    'vid inp';
+    'vid vid'
+    'msg msg'
+    'inp inp';
 }
 
 #main{
@@ -101,16 +101,13 @@ p {
 #videos {
   grid-area: vid;
   margin: 10px;
-  margin-right: 0;
   display: grid;
-  grid-template-rows: 1fr 1fr;
+  grid-template-rows: auto;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
   overflow: hidden;
 }
 
-#self {
-  overflow: hidden;
-  margin-top: 5px;
-}
 #peer {
   margin-bottom: 5px;
   overflow: hidden;
