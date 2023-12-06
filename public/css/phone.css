@@ -44,7 +44,7 @@
   #main {
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 8% 40% auto 7%;
+    grid-template-rows: 8% 65% auto 7%;
     grid-template-areas:
       'top'
       'vid'
@@ -127,7 +127,7 @@
     position: absolute;
     z-index: 10;
     width: 25%;
-    bottom: 5px;
+    bottom: 15px;
     right: 10px;
   }
   #video-self {
