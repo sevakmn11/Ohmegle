@@ -7,25 +7,25 @@ function configureTopbar() {
   })
 }
 
-function configureFeedbackModal() {
-  const $modal = $('#feedbackModal')
-  const $btn = $('#feedback-btn')
-  const $close = $('#feedbackModal .close')
-  const $text = $('#feedbackText')
+// function configureFeedbackModal() {
+//   const $modal = $('#feedbackModal')
+//   const $btn = $('#feedback-btn')
+//   const $close = $('#feedbackModal .close')
+//   const $text = $('#feedbackText')
 
-  $btn.onclick = () => {
-    $modal.style.display = 'block'
-  }
+//   $btn.onclick = () => {
+//     $modal.style.display = 'block'
+//   }
 
-  $close.onclick = () => {
-    $modal.style.display = 'none'
-  }
+//   $close.onclick = () => {
+//     $modal.style.display = 'none'
+//   }
 
-  window.onclick = (e) => {
-    if (e.target == $modal) {
-      $modal.style.display = 'none'
-    }
-  }
+//   window.onclick = (e) => {
+//     if (e.target == $modal) {
+//       $modal.style.display = 'none'
+//     }
+//   }
 
   $('#feedbackForm').onsubmit = async (e) => {
     e.preventDefault()
